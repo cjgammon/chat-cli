@@ -63,7 +63,7 @@ llm openai
 Optionally, specify the model and temperature using flags:
 
 ```
-llm openai --model gpt-4 --temp 0.7
+llm openai --m 4 --t 0.7
 ```
 
 Follow the interactive prompt to enter your text generation request.
