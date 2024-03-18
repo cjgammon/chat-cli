@@ -31,6 +31,10 @@ const openai = new openAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+const anthropic = new Anthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY,
+});
+
 const SYSTEM_PROMPT = ``;
 
 yargs
@@ -59,6 +63,13 @@ yargs
     },
   })
   .command({
+    command: "claude",
+    describe: "Use Claude",
+    handler: () => {
+      runAnthropic();
+    },
+  })
+  .command({
     command: "$0",
     describe: "default",
     handler: () => {
@@ -67,6 +78,40 @@ yargs
   })
   .help()
   .parse();
+
+async function runAnthropic() {
+  const modelName = "claude-3-opus-20240229";
+  let modelLabel = modelName.split("-");
+  modelLabel.pop();
+  modelLabel = modelLabel.join("-");
+
+  let prompt;
+  try {
+    prompt = await input({ message: `${modelLabel}:` });
+  } catch (error) {
+    //console.log(chalk.red("Error: ", error));
+    return;
+  }
+
+  if (!prompt || prompt === "") {
+    console.log(chalk.red("No prompt provided!"));
+    return;
+  }
+
+  const msg = await anthropic.messages.create({
+    model: modelName,
+    max_tokens: 1024,
+    messages: [{ role: "user", content: prompt }],
+  });
+
+  const responseMessage = msg.content[0].text;
+
+  console.log(chalk.green(responseMessage));
+
+  await checkCopy(responseMessage);
+
+  runAnthropic();
+}
 
 async function runGemini() {
   const modelName = "gemini-pro";

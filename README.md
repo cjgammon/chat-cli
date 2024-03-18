@@ -1,11 +1,11 @@
 # LLM CLI
 
-The LLM CLI leverages the power of both OpenAI and Google's Gemini API to provide a command-line interface for generating text content. It's designed to offer flexibility in choosing between two cutting-edge AI models for content creation, providing a streamlined process for generating, using, and optionally copying the output to your clipboard. This tool is ideal for developers, writers, and anyone looking to experiment with AI-driven text generation.
+The LLM CLI leverages the power of OpenAI's GPT, Google's Gemini, and Anthropic's Claude API to provide a command-line interface for generating text content. It's designed to offer flexibility in choosing between cutting-edge AI models for content creation, providing a streamlined process for generating, using, and optionally copying the output to your clipboard. This tool is ideal for developers, writers, and anyone looking to experiment with AI-driven text generation.
 
 ## Features
 
-- Choose between Google's Gemini API and OpenAI for text generation.
-- Set the model and temperature for OpenAI's text generation.
+- Choose between Google's Gemini API, OpenAI, or Anthropic's Claude for text generation.
+- Set the model and temperature text generation.
 - Interactive prompt for inputting your text generation requests.
 - Option to copy the generated content to your clipboard.
 
@@ -14,7 +14,7 @@ The LLM CLI leverages the power of both OpenAI and Google's Gemini API to provid
 Before you start using the CLI, ensure you have the following:
 
 - Node.js installed on your machine.
-- API keys for both OpenAI and Google's Gemini API.
+- API keys for relevant services.
 - An understanding of how to use the command line.
 
 ## Installation
@@ -32,6 +32,7 @@ npm install
 ```
 OPENAI_API_KEY=your_openai_api_key_here
 GEMINI_API_KEY=your_google_gemini_api_key_here
+ANTROPIC_API_KEY=your_antrhopic_api_key_here
 ```
 
 5. Install globally (optional).
@@ -44,7 +45,7 @@ GEMINI_API_KEY=your_google_gemini_api_key_here
 
 Run the LLM CLI tool from the command line in the project directory. You can choose between two main commands:
 
-### To use Google's Gemini for text generation, run:
+### Google's Gemini for text generation:
 
 ```
 llm gemini
@@ -52,7 +53,7 @@ llm gemini
 
 Follow the interactive prompt to enter your text generation request.
 
-### Using OpenAI
+### OpenAI for generation:
 
 To use OpenAI for text generation, run:
 
@@ -64,6 +65,12 @@ Optionally, specify the model and temperature using flags:
 
 ```
 llm openai --m 4 --t 0.7
+```
+
+### Anthropic for text generation;
+
+```
+llm claude
 ```
 
 Follow the interactive prompt to enter your text generation request.
