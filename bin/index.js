@@ -6,6 +6,7 @@ import { hideBin } from "yargs/helpers";
 
 import openAI from "openai";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import Anthropic from "@anthropic-ai/sdk";
 
 import dotenv from "dotenv";
 import path from "path";
