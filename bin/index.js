@@ -73,14 +73,16 @@ yargs
     command: "$0",
     describe: "default",
     handler: () => {
-      runOpenai();
+      //runOpenai();
+      runAnthropic();
     },
   })
   .help()
   .parse();
 
 async function runAnthropic() {
-  const modelName = "claude-3-opus-20240229";
+  //const modelName = "claude-3-opus-20240229";
+  const modelName = "claude-3-5-sonnet-20241022";
   let modelLabel = modelName.split("-");
   modelLabel.pop();
   modelLabel = modelLabel.join("-");
@@ -115,6 +117,7 @@ async function runAnthropic() {
 
 async function runGemini() {
   const modelName = "gemini-pro";
+  //const modelName = "gemini-exp-1121";
   const model = genAI.getGenerativeModel({ model: modelName });
 
   let prompt;
