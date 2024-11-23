@@ -80,6 +80,8 @@ yargs
   .help()
   .parse();
 
+const messages = [];
+
 async function runAnthropic() {
   //const modelName = "claude-3-opus-20240229";
   const modelName = "claude-3-5-sonnet-20241022";
@@ -100,10 +102,12 @@ async function runAnthropic() {
     return;
   }
 
+  messages.push({ role: "user", content: prompt });
+
   const msg = await anthropic.messages.create({
     model: modelName,
     max_tokens: 1024,
-    messages: [{ role: "user", content: prompt }],
+    messages: messages,
   });
 
   const responseMessage = msg.content[0].text;
@@ -133,8 +137,21 @@ async function runGemini() {
     return;
   }
 
-  const result = await model.generateContent(prompt);
-  const response = await result.response;
+  const chat = model.startChat({
+    history: messages,
+    generationConfig: {
+      maxOutputTokens: 100,
+    },
+  });
+
+  messages.push({
+    role: "user",
+    parts: [{ text: prompt }],
+  });
+
+  //const result = await model.generateContent(prompt);
+  const result = await chat.sendMessage(prompt);
+  const response = result.response;
   const text = response.text();
 
   console.log(chalk.green(text));
@@ -145,7 +162,7 @@ async function runGemini() {
 }
 
 async function runOpenai() {
-  let temperture = 0.5;
+  let temperature = 0.5;
   let model = "gpt-3.5-turbo";
 
   const modelArg = yargs.argv.model;
@@ -155,7 +172,7 @@ async function runOpenai() {
 
   const tempArg = yargs.argv.temp;
   if (tempArg) {
-    temperture = tempArg;
+    temperature = tempArg;
   }
 
   let prompt;
@@ -171,20 +188,16 @@ async function runOpenai() {
     return;
   }
 
+  messages.push({
+    role: "user",
+    content: prompt,
+  });
+
   const chatCompletion = await openai.chat.completions.create({
     model,
     temperature,
     top_p: 1,
-    messages: [
-      {
-        role: "system",
-        content: SYSTEM_PROMPT,
-      },
-      {
-        role: "user",
-        content: prompt,
-      },
-    ],
+    messages: messages,
   });
 
   const responseMessage = chatCompletion.choices[0].message;
